@@ -166,6 +166,12 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+-- for making tabs and spaces consistent
+vim.o.tabstop = 4 -- tab will be shown as 4 spaces
+vim.o.shiftwidth = 4 -- indent operations use 4 spaces
+vim.o.expandtab = true -- use spaces when pressing tab
+vim.o.softtabstop = 4 -- when pressing tab, add 4 spaces
+
 -- remove adding comments to next line
 vim.cmd 'autocmd BufEnter * set formatoptions-=cro'
 vim.cmd 'autocmd BufEnter * setlocal formatoptions-=cro'
@@ -251,7 +257,8 @@ rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
+
+  -- 'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -416,7 +423,7 @@ require('lazy').setup({
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
-        -- pickers = {}
+        pickers = { find_files = { hidden = true } },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -677,17 +684,24 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        -- python
+        pylsp = {
+          settings = {
+            plugins = {
+              -- not required as conform handles formatting
+              -- black = { enabled = true },
+              -- isort = { enabled = true },
+            },
+          },
+        },
+        -- rust
         rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
-        --
-
+        -- javascript
+        ts_ls = {},
+        -- java
+        jdtls = {},
+        -- lua
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -773,10 +787,12 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        --
+        python = { 'isort', 'black' },
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        javascript = { 'prettierd', stop_after_first = true },
+        json = { 'prettierd', stop_after_first = true },
+        java = { 'google-java-format' },
+        sh = { 'shfmt' },
       },
     },
   },
@@ -888,6 +904,14 @@ require('lazy').setup({
       -- load color scheme on loading
       vim.cmd.colorscheme 'onedark'
     end,
+  },
+
+  -- multiple comments
+  {
+    'numToStr/Comment.nvim',
+    opts = {
+      -- add any options here
+    },
   },
 
   -- Highlight todo, notes, etc in comments
