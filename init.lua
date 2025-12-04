@@ -356,7 +356,7 @@ require('lazy').setup({
       -- Document existing key chains
       spec = {
         { '<leader>s', group = '[S]earch' },
-        { '<leader>t', group = '[T]oggle' },
+        -- { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
       },
     },
@@ -423,7 +423,7 @@ require('lazy').setup({
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
-        pickers = { find_files = { hidden = true } },
+        pickers = { find_files = { hidden = false } },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -624,16 +624,6 @@ require('lazy').setup({
               end,
             })
           end
-
-          -- The following code creates a keymap to toggle inlay hints in your
-          -- code, if the language server you are using supports them
-          --
-          -- This may be unwanted, since they displace some of your code
-          if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
-            map('<leader>th', function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-            end, '[T]oggle Inlay [H]ints')
-          end
         end,
       })
 
@@ -700,7 +690,13 @@ require('lazy').setup({
         -- javascript
         ts_ls = {},
         -- java
-        jdtls = {},
+        jdtls = {
+          java = {
+            format = {
+              enabled = false,
+            },
+          },
+        },
         -- lua
         lua_ls = {
           -- cmd = { ... },
@@ -791,8 +787,13 @@ require('lazy').setup({
         -- You can use 'stop_after_first' to run the first available formatter from the list
         javascript = { 'prettierd', stop_after_first = true },
         json = { 'prettierd', stop_after_first = true },
-        java = { 'google-java-format' },
+        cpp = { 'clang-format' },
+        java = { 'clang-format' },
         sh = { 'shfmt' },
+        xml = { 'xmlformatter' },
+        toml = { 'taplo' },
+        markdown = { 'mdslw', 'mdsf' },
+        yaml = { 'prettierd' },
       },
     },
   },
@@ -1006,6 +1007,56 @@ require('lazy').setup({
   -- Or use telescope!
   -- In normal mode type `<space>sh` then write `lazy.nvim-plugin`
   -- you can continue same window with `<space>sr` which resumes last telescope search
+
+  -- Code completion for LLM, AI
+  {
+    'olimorris/codecompanion.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+    },
+    opts = {
+      strategies = {
+        chat = {
+          adapter = 'locallamma',
+        },
+        inline = {
+          adapter = 'locallamma',
+        },
+        cmd = {
+          adapter = 'locallamma',
+        },
+      },
+      adapters = {
+        http = {
+          locallamma = function()
+            return require('codecompanion.adapters').extend('ollama', {
+              name = 'locallamma',
+              schema = {
+                model = {
+                  default = 'deepseek-coder-v2:16b',
+                },
+              },
+            })
+          end,
+        },
+      },
+    },
+    config = function(_, opts)
+      -- load the plugin with opts
+      require('codecompanion').setup(opts)
+
+      -- custom keyboard shortcuts
+      local map = vim.keymap.set
+
+      map({ 'n', 'v' }, '<C-a>', '<cmd>CodeCompanionActions<cr>', { noremap = true, silent = true })
+      map({ 'n', 'v' }, '<LocalLeader>ai', '<cmd>CodeCompanionChat Toggle<cr>', { noremap = true, silent = true })
+      map('v', 'ga', '<cmd>CodeCompanionChat Add<cr>', { noremap = true, silent = true })
+
+      -- Expand 'cc' into 'CodeCompanion' in the command line
+      vim.cmd [[cab cc CodeCompanion]]
+    end,
+  },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
@@ -1030,3 +1081,7 @@ require('lazy').setup({
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
+-- opening terminal alongside
+vim.keymap.set('n', '<leader>tv', ':vsplit | terminal<CR>', { noremap = true, silent = true, desc = 'Open [T]erminal in [V]ertical split' })
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = true })
