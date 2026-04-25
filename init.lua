@@ -423,7 +423,7 @@ require('lazy').setup({
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
-        pickers = { find_files = { hidden = true } },
+        pickers = { find_files = { hidden = false } },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -700,7 +700,13 @@ require('lazy').setup({
         -- javascript
         ts_ls = {},
         -- java
-        jdtls = {},
+        jdtls = {
+          java = {
+            format = {
+              enabled = false,
+            },
+          },
+        },
         -- lua
         lua_ls = {
           -- cmd = { ... },
@@ -791,8 +797,13 @@ require('lazy').setup({
         -- You can use 'stop_after_first' to run the first available formatter from the list
         javascript = { 'prettierd', stop_after_first = true },
         json = { 'prettierd', stop_after_first = true },
-        java = { 'google-java-format' },
+        cpp = { 'clang-format' },
+        java = { 'clang-format' },
         sh = { 'shfmt' },
+        xml = { 'xmlformatter' },
+        toml = { 'taplo' },
+        markdown = { 'mdslw', 'mdsf' },
+        yaml = { 'prettierd' },
       },
     },
   },
@@ -896,13 +907,24 @@ require('lazy').setup({
     },
   },
 
-  -- one dark theme
+  -- -- one dark theme
+  -- {
+  --   'olimorris/onedarkpro.nvim',
+  --   priority = 1000,
+  --   config = function()
+  --     -- load color scheme on loading
+  --     vim.cmd.colorscheme 'onedark'
+  --   end,
+  -- },
   {
-    'olimorris/onedarkpro.nvim',
+    'loctvl842/monokai-pro.nvim',
+    lazy = false,
     priority = 1000,
     config = function()
-      -- load color scheme on loading
-      vim.cmd.colorscheme 'onedark'
+      require('monokai-pro').setup {
+        filter = 'machine',
+      }
+      vim.cmd.colorscheme 'monokai-pro'
     end,
   },
 
