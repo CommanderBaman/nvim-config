@@ -897,13 +897,24 @@ require('lazy').setup({
     },
   },
 
-  -- one dark theme
+  -- -- one dark theme
+  -- {
+  --   'olimorris/onedarkpro.nvim',
+  --   priority = 1000,
+  --   config = function()
+  --     -- load color scheme on loading
+  --     vim.cmd.colorscheme 'onedark'
+  --   end,
+  -- },
   {
-    'olimorris/onedarkpro.nvim',
+    'loctvl842/monokai-pro.nvim',
+    lazy = false,
     priority = 1000,
     config = function()
-      -- load color scheme on loading
-      vim.cmd.colorscheme 'onedark'
+      require('monokai-pro').setup {
+        filter = 'machine',
+      }
+      vim.cmd.colorscheme 'monokai-pro'
     end,
   },
 
