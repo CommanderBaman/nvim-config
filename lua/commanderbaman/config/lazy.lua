@@ -17,21 +17,13 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
--- require('lazy').setup({ spec = { import = 'commanderbaman.plugin' } }, {
---   checker = {
---     enabled = true, -- automatically check for updates
---     notify = false, -- don't notify when
---   },
---   change_detection = {
---     notify = false,
---   },
--- })
-
 -- Setup lazy.nvim
 require('lazy').setup({
     spec = {
         -- import your plugins
         { import = 'commanderbaman.plugin' },
+        -- TODO: replace with themery like system
+        { import = 'commanderbaman.theme' },
     },
     checker = {
         enabled = true, -- automatically check for updates

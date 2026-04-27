@@ -2,7 +2,7 @@ return {
     'olimorris/onedarkpro.nvim',
     lazy = false,
     priority = 1000,
-    enabled = true,
+    enabled = false,
     config = function()
         -- load color scheme on loading
         vim.cmd.colorscheme 'onedark'
