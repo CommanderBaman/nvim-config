@@ -1,4 +1,7 @@
 -- Neo-tree is a Neovim plugin to browse the file system
+-- NOTE: if disabling this plugin for using netrw,
+-- please edit core/option.lua to enable netrw again
+
 ---@module 'lazy'
 ---@type LazySpec
 return {
