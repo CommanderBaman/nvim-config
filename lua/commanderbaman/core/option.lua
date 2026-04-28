@@ -5,6 +5,10 @@ local global = vim.g
 -- fonts
 global.have_nerd_font = true
 
+-- disable netrw for neo-tree
+global.loaded_netrw = 1
+global.loaded_netrwPlugin = 1
+
 -- show line numbers relatively
 o.number = true
 o.relativenumber = true
@@ -16,9 +20,7 @@ o.relativenumber = true
 -- o.showmode = false
 
 -- clipboard to be same as OS one
-vim.schedule(function()
-  o.clipboard = 'unnamedplus'
-end)
+vim.schedule(function() o.clipboard = 'unnamedplus' end)
 
 -- long lines of share same indent
 o.breakindent = true
