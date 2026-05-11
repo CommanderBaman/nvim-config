@@ -41,6 +41,7 @@ return {
             json = { 'prettierd', stop_after_first = true },
             cpp = { 'clang-format' },
             java = { 'clang-format' },
+            kotlin = { 'ktfmt' },
             sh = { 'shfmt' },
             xml = { 'xmlformatter' },
             toml = { 'taplo' },
