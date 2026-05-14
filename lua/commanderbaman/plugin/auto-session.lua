@@ -10,9 +10,10 @@ return {
     ---@module "auto-session"
     ---@type AutoSession.Config
     opts = {
+        auto_save = true,
+        auto_restore = true,
+        auto_create = true,
         suppressed_dirs = { '~/', '~/Downloads' },
-        -- log_level = 'debug',
-        pre_save_cmds = { 'Neotree close' }, -- close neo-tree before saving session
-        post_restore_cmds = { 'Neotree reveal' }, -- reopen it after restoring
+        pre_save_cmds = { 'Neotree close' },
     },
 }

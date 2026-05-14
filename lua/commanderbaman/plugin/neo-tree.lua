@@ -19,18 +19,32 @@ return {
     ---@module 'neo-tree'
     ---@type neotree.Config
     opts = {
+        -- position the neotree window
         window = {
             position = 'right',
         },
         filesystem = {
-            hijack_netrw_behavior = 'open_default',
+            -- needs to be disabled so that it doesn't open by default
+            hijack_netrw_behavior = 'disabled',
             window = {
                 mappings = {
                     ['\\'] = 'close_window',
                 },
             },
+            -- make every item visible
             filtered_items = {
                 visible = true,
+                never_show_by_pattern = {
+                    '.git',
+                    'node_modules',
+                },
+            },
+        },
+        event_handlers = {
+            -- close neotree when we open up a file via it
+            {
+                event = 'file_opened',
+                handler = function() vim.cmd 'Neotree close' end,
             },
         },
     },
