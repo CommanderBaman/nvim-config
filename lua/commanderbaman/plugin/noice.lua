@@ -21,6 +21,17 @@ return {
     },
     dependencies = {
         'MunifTanjim/nui.nvim',
-        'rcarriga/nvim-notify',
+        {
+            'rcarriga/nvim-notify',
+            ---@module "notify"
+            ---@type notify.Config
+            opts = {
+                -- This forces notifications to stack from the bottom up
+                render = 'compact',
+                merge_duplicates = true,
+                top_down = false,
+                stages = 'static',
+            },
+        },
     },
 }
