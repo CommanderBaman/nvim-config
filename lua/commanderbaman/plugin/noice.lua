@@ -26,10 +26,11 @@ return {
             ---@module "notify"
             ---@type notify.Config
             opts = {
-                -- This forces notifications to stack from the bottom up
-                render = 'compact',
+                -- duplicate notifications don't consume more space
                 merge_duplicates = true,
+                -- This forces notifications to stack from the bottom up
                 top_down = false,
+                -- no animation
                 stages = 'static',
             },
         },
