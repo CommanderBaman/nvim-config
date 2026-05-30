@@ -35,4 +35,32 @@ return {
             },
         },
     },
+    init = function()
+        -- for macros notice
+        local macro_group = vim.api.nvim_create_augroup(
+            'NoiceMacroNotifications',
+            { clear = true }
+        )
+        vim.api.nvim_create_autocmd('RecordingEnter', {
+            group = macro_group,
+            callback = function()
+                local msg = string.format(
+                    'Recording macro to [%s]',
+                    vim.fn.reg_recording()
+                )
+                vim.notify(msg, vim.log.levels.INFO, { title = 'Macro' })
+            end,
+        })
+
+        vim.api.nvim_create_autocmd('RecordingLeave', {
+            group = macro_group,
+            callback = function()
+                vim.notify(
+                    'Stopped recording',
+                    vim.log.levels.INFO,
+                    { title = 'Macro' }
+                )
+            end,
+        })
+    end,
 }
