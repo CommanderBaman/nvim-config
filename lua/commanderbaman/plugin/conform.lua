@@ -48,5 +48,10 @@ return {
             markdown = { 'mdslw', 'mdsf' },
             yaml = { 'prettierd' },
         },
+        formatters = {
+            ktfmt = {
+                prepend_args = { '--kotlinlang-style' },
+            },
+        },
     },
 }
