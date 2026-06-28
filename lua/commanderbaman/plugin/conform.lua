@@ -46,7 +46,7 @@ return {
             xml = { 'xmlformatter' },
             toml = { 'taplo' },
             markdown = { 'mdslw', 'mdsf' },
-            yaml = { 'prettierd' },
+            yaml = { 'yamlfmt', 'prettierd', stop_after_first = true },
         },
         formatters = {
             ktfmt = {
