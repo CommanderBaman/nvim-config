@@ -28,8 +28,6 @@ return {
 
         -- set cursor location to line:column
         ---@diagnostic disable-next-line: duplicate-set-field
-        statusline.section_location = function()
-            return '%2l:%-2v'
-        end
+        statusline.section_location = function() return '%2l:%-2v' end
     end,
 }

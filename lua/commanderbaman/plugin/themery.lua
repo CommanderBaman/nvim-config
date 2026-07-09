@@ -1,3 +1,7 @@
+-- for switching to various themes on the fly
+
+---@module 'lazy'
+---@type LazySpec
 return {
     'zaldih/themery.nvim',
     lazy = false,
