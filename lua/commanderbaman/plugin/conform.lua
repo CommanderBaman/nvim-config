@@ -39,6 +39,7 @@ return {
             -- You can use 'stop_after_first' to run the first available formatter from the list
             javascript = { 'prettierd', stop_after_first = true },
             json = { 'prettierd', stop_after_first = true },
+            c = { 'clang-format' },
             cpp = { 'clang-format' },
             java = { 'clang-format' },
             kotlin = { 'ktfmt' },
