@@ -34,15 +34,14 @@ return {
         end,
         formatters_by_ft = {
             lua = { 'stylua' },
-            -- Conform can also run multiple formatters sequentially
-            python = { 'isort', 'black' },
-            -- You can use 'stop_after_first' to run the first available formatter from the list
+            python = { 'ruff_format', 'ruff_organize_imports' },
             javascript = { 'prettierd', stop_after_first = true },
             json = { 'prettierd', stop_after_first = true },
             c = { 'clang-format' },
             cpp = { 'clang-format' },
             java = { 'clang-format' },
             kotlin = { 'ktfmt' },
+            haskell = { 'fourmolu' },
             sh = { 'shfmt' },
             xml = { 'xmlformatter' },
             toml = { 'taplo' },
