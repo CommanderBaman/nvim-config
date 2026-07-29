@@ -4,7 +4,6 @@ return {
     version = '*',
     event = 'VimEnter',
     dependencies = {
-
         'nvim-lua/plenary.nvim',
         -- native telescope sorter
         { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
@@ -93,6 +92,19 @@ return {
             builtin.oldfiles,
             { desc = '[S]earch Recent Files ("." for repeat)' }
         )
+        vim.keymap.set('n', '<leader>sl', function()
+            local opts = {}
+            opts.prompt_title = 'Find all files except VCS'
+            opts.find_command = {
+                'rg',
+                '--files',
+                '--no-ignore',
+                '--hidden',
+                '--glob',
+                '!**/.{git,jj}/*',
+            }
+            builtin.find_files(opts)
+        end, { desc = '[S]earch a[L]l files except VCS' })
         vim.keymap.set(
             'n',
             '<leader><leader>',

@@ -22,6 +22,9 @@ return {
                 view = 'notify',
             },
         },
+        presets = {
+            lsp_doc_border = true,
+        },
     },
     dependencies = {
         'MunifTanjim/nui.nvim',
@@ -55,7 +58,6 @@ return {
                 vim.notify(msg, vim.log.levels.INFO, { title = 'Macro' })
             end,
         })
-
         vim.api.nvim_create_autocmd('RecordingLeave', {
             group = macro_group,
             callback = function()
