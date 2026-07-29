@@ -22,8 +22,6 @@ require('lazy').setup({
     spec = {
         -- import your plugins
         { import = 'commanderbaman.plugin' },
-        -- TODO: replace with themery like system
-        { import = 'commanderbaman.theme' },
     },
     checker = {
         enabled = true, -- automatically check for updates
