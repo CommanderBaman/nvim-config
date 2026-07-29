@@ -1,3 +1,7 @@
+-- one dark pro theme
+
+---@module 'lazy'
+---@type LazySpec
 return {
     'olimorris/onedarkpro.nvim',
     lazy = false,
