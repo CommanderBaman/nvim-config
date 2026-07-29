@@ -14,7 +14,11 @@ return {
         routes = {
             -- show file saved events
             {
-                filter = { event = 'msg_show', kind = 'bufwrite' },
+                filter = {
+                    event = 'msg_show',
+                    kind = 'progress',
+                    find = 'written',
+                },
                 view = 'notify',
             },
         },
