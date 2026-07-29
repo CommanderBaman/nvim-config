@@ -15,8 +15,17 @@ return {
     },
     config = function()
         require('telescope').setup {
-            -- TODO: try out https://github.com/nvim-telescope/telescope.nvim/wiki/Configuration-Recipes#file-and-text-search-in-hidden-files-and-directories
-            pickers = { find_files = { hidden = false } },
+            pickers = {
+                find_files = {
+                    find_command = {
+                        'rg',
+                        '--files',
+                        '--hidden',
+                        '--glob',
+                        '!**/.git/*',
+                    },
+                },
+            },
             extensions = {
                 ['ui-select'] = {
                     require('telescope.themes').get_dropdown(),
