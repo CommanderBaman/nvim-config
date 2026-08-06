@@ -1,0 +1,1 @@
+require 'commanderbaman.config.lazy'
