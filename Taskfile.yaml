@@ -1,72 +1,70 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 includes:
-  base:
-    taskfile: ./.grimoire/src/hooks/base.yaml
-    flatten: true
-  lua:
-    taskfile: ./.grimoire/src/commands/stylua.yaml
-    internal: true
-  yaml:
-    taskfile: ./.grimoire/src/commands/yamlfmt.yaml
-    internal: true
-  mdsf:
-    taskfile: ./.grimoire/src/commands/mdsf.yaml
-    internal: true
-  mdslw:
-    taskfile: ./.grimoire/src/commands/mdslw.yaml
-    internal: true
+    base:
+        taskfile: ./.grimoire/src/hooks/base.yaml
+        flatten: true
+    lua:
+        taskfile: ./.grimoire/src/commands/stylua.yaml
+        internal: true
+    yaml:
+        taskfile: ./.grimoire/src/commands/yamlfmt.yaml
+        internal: true
+    mdsf:
+        taskfile: ./.grimoire/src/commands/mdsf.yaml
+        internal: true
+    mdslw:
+        taskfile: ./.grimoire/src/commands/mdslw.yaml
+        internal: true
 silent: true
 tasks:
-  format:
-    desc: initialize the formatters for the project
-    aliases:
-      - fmt
-    cmds:
-      - task: lua:init:format
-      - task: yaml:init:format
-  format:init:
-    desc: format all files in the project
-    aliases:
-      - fmt
-    cmds:
-      - task: lua:format
-      - task: mdslw:format
-      - task: mdsf:format
-      - task: yaml:format
-  format:check:
-    desc: check if all files in project are formatted properly
-    cmds:
-      - task: lua:format:check
-      - task: mdslw:format:check
-      - task: mdsf:format:check
-      - task: yaml:format:check
-  format:files:
-    desc: format specific files in repository. usage = task format:files FILES="a b"
-    requires:
-      vars: [FILES]
-    cmds:
-      - task: lua:format:files
-      - task: yaml:format:files
-      - task: mdslw:format:files
-      - task: mdsf:format:files
-  lint:
-    desc: check for lint errors in the project
-    cmds:
-      - task: lua:lint
-      - task: yaml:lint
-      - task: mdslw:lint
-      - task: mdsf:lint
-  lint:files:
-    desc: check for lint errors in specific files. usage = task lint:files = FILES="a b"
-    requires:
-      vars: [FILES]
-    cmds:
-      - task: lua:lint:files
-      - task: yaml:lint:files
-      - task: mdslw:lint:files
-      - task: mdsf:lint:files
-  test:
-    desc: test if repository is working as intended
-    cmds:
-      - echo "no tests for this repository defined till now"
+    format:
+        desc: initialize the formatters for the project
+        aliases:
+        - fmt
+        cmds:
+        - task: lua:init:format
+        - task: yaml:init:format
+    format:init:
+        desc: format all files in the project
+        cmds:
+        - task: lua:format
+        - task: mdslw:format
+        - task: mdsf:format
+        - task: yaml:format
+    format:check:
+        desc: check if all files in project are formatted properly
+        cmds:
+        - task: lua:format:check
+        - task: mdslw:format:check
+        - task: mdsf:format:check
+        - task: yaml:format:check
+    format:files:
+        desc: format specific files in repository. usage = task format:files FILES="a b"
+        requires:
+            vars: [FILES]
+        cmds:
+        - task: lua:format:files
+        - task: yaml:format:files
+        - task: mdslw:format:files
+        - task: mdsf:format:files
+    lint:
+        desc: check for lint errors in the project
+        cmds:
+        - task: lua:lint
+        - task: yaml:lint
+        - task: mdslw:lint
+        - task: mdsf:lint
+    lint:files:
+        desc: check for lint errors in specific files. usage = task lint:files = FILES="a b"
+        requires:
+            vars: [FILES]
+        cmds:
+        - task: lua:lint:files
+        - task: yaml:lint:files
+        - task: mdslw:lint:files
+        - task: mdsf:lint:files
+    test:
+        desc: test if repository is working as intended
+        cmds:
+        - echo "no tests for this repository defined till now"
