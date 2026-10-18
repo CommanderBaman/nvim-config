@@ -1,0 +1,73 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+includes:
+    fd:
+        taskfile: ./fd.yaml
+        internal: true
+        vars:
+            GRIMOIRE_DIR: '{{.GRIMOIRE_DIR}}'
+vars:
+    MDSF_COMMAND: 'mdsf --log-level error'
+    MDSF_FORMAT_COMMAND: '{{.MDSF_COMMAND}} format'
+    MDSF_FORMAT_CHECK_COMMAND: '{{.MDSF_COMMAND}} verify'
+tasks:
+    ensure:
+        desc: check if mdsf is present and setup
+        internal: true
+        preconditions:
+        - sh: mdsf --version
+          msg: mdsf must be installed to run mdsf commands
+    format:
+        desc: format all markdown files present in folder
+        internal: true
+        deps:
+        - task: ensure
+        cmds:
+        - task: fd:exec
+          vars:
+            COMMAND: '{{.MDSF_FORMAT_COMMAND}}'
+            EXTENSIONS:
+            - md
+    format:files:
+        desc: format all markdown files
+        dir: '{{.USER_WORKING_DIR}}'
+        internal: true
+        requires:
+            vars: [FILES]
+        deps:
+        - task: ensure
+        cmds:
+        - '{{.MDSF_FORMAT_COMMAND}} {{.FILES}}'
+    format:check:
+        desc: check formatting of all markdown files
+        internal: true
+        deps:
+        - task: ensure
+        cmds:
+        - task: fd:exec
+          vars:
+            COMMAND: '{{.MDSF_FORMAT_CHECK_COMMAND}}'
+            EXTENSIONS:
+            - md
+    format:check:files:
+        desc: check formatting of given markdown files
+        dir: '{{.USER_WORKING_DIR}}'
+        internal: true
+        requires:
+            vars: [FILES]
+        deps:
+        - task: ensure
+        cmds:
+        - '{{.MDSF_FORMAT_CHECK_COMMAND}} {{.FILES}}'
+    lint:
+        desc: lint all markdown files
+        internal: true
+        cmds:
+        - task: format:check
+    lint:files:
+        desc: lint given markdown files
+        internal: true
+        requires:
+            vars: [FILES]
+        cmds:
+        - task: format:check:files

@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+includes:
+    variables:
+        taskfile: ../common/variables.yaml
+        internal: true
+        vars:
+            GRIMOIRE_DIR: '{{.GRIMOIRE_DIR}}'
+tasks:
+    ensure:
+        desc: check if git is present
+        internal: true
+        preconditions:
+        - sh: git --version
+          msg: git must be installed to do git operations
+    init:attributes:
+        desc: setup config for git attributes by copying the default if not present
+        dir: '{{.USER_WORKING_DIR}}'
+        internal: true
+        # either default present or already present in repo
+        preconditions:
+        - sh: "[ -f {{.CONFIG_DIR}}/.gitattributes -o -f .gitattributes ]"
+          msg: default attributes config must be present
+        # successful if git attributes present at root
+        status:
+        - "[ -f .gitattributes ]"
+        cmds:
+        - cp {{.CONFIG_DIR}}/.gitattributes .gitattributes
+    init:hooks:
+        desc: setup prepush and precommit hooks and make them executable
+        dir: '{{.USER_WORKING_DIR}}'
+        internal: true
+        deps:
+        - task: ensure
+        requires:
+            vars: [GITHOOK_DIR]
+        cmds:
+        - chmod +x {{.GITHOOK_DIR}}/*
+        - git config core.hooksPath {{.GITHOOK_DIR}}
+        - echo "Git hooks configured to use '{{.GITHOOK_DIR}}' folder"

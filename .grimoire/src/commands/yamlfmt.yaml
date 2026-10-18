@@ -1,0 +1,76 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+includes:
+    fd:
+        taskfile: ./fd.yaml
+        internal: true
+        vars:
+            GRIMOIRE_DIR: '{{.GRIMOIRE_DIR}}'
+tasks:
+    ensure:
+        desc: check if yamlfmt is present and setup
+        internal: true
+        preconditions:
+        - sh: yamlfmt -version
+          msg: yamlfmt must be installed to format the project
+    init:format:
+        desc: initialize the config for format
+        dir: '{{.USER_WORKING_DIR}}'
+        internal: true
+        preconditions:
+        # either default present or already present in repo
+        - sh: "[ -f {{.CONFIG_DIR}}/.yamlfmt.yaml -o -f .yamlfmt.yaml ]"
+          msg: default config must be present
+        # successful if config is present
+        status:
+        - "[ -f .yamlfmt.yaml ]"
+        cmds:
+        - cp {{.CONFIG_DIR}}/.yamlfmt.yaml .yamlfmt.yaml
+    format:
+        desc: format all yaml files present in folder
+        deps:
+        - task: ensure
+        cmds:
+        - task: fd:exec
+          vars:
+            COMMAND: yamlfmt
+            EXTENSIONS:
+            - yaml
+            - yml
+    format:files:
+        desc: format all yaml files
+        requires:
+            vars: [FILES]
+        deps:
+        - task: ensure
+        cmds:
+        - yamlfmt {{.FILES}}
+    format:check:
+        desc: check formatting of all yaml files
+        deps:
+        - task: ensure
+        cmds:
+        - task: fd:exec
+          vars:
+            COMMAND: yamlfmt -lint
+            EXTENSIONS:
+            - yaml
+            - yml
+    format:check:files:
+        desc: check formatting of given yaml files
+        requires:
+            vars: [FILES]
+        deps:
+        - task: ensure
+        cmds:
+        - yamlfmt -lint {{.FILES}}
+    lint:
+        desc: lint all yaml files
+        cmds:
+        - task: format:check
+    lint:files:
+        desc: lint given yaml files
+        requires:
+            vars: [FILES]
+        cmds:
+        - task: format:check:files

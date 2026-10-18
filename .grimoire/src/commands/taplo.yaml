@@ -1,0 +1,85 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+includes:
+    fd:
+        taskfile: ./fd.yaml
+        internal: true
+        vars:
+            GRIMOIRE_DIR: '{{.GRIMOIRE_DIR}}'
+env:
+    RUST_LOG: ERROR
+vars:
+    TAPLO_COMMAND: 'taplo'
+    TAPLO_FORMAT_COMMAND: '{{.TAPLO_COMMAND}} format'
+    TAPLO_FORMAT_CHECK_COMMAND: '{{.TAPLO_COMMAND}} format --check'
+    TAPLO_LINT_COMMAND: '{{.TAPLO_COMMAND}} lint'
+tasks:
+    ensure:
+        desc: check if taplo is present and setup
+        internal: true
+        preconditions:
+        - sh: taplo --version
+          msg: taplo must be installed to run taplo commands
+    format:
+        desc: format all toml files present in folder
+        internal: true
+        deps:
+        - task: ensure
+        cmds:
+        - task: fd:exec
+          vars:
+            COMMAND: '{{.TAPLO_FORMAT_COMMAND}}'
+            EXTENSIONS:
+            - toml
+    format:files:
+        desc: format all toml files
+        dir: '{{.USER_WORKING_DIR}}'
+        internal: true
+        requires:
+            vars: [FILES]
+        deps:
+        - task: ensure
+        cmds:
+        - '{{.TAPLO_FORMAT_COMMAND}} {{.FILES}}'
+    format:check:
+        desc: check formatting of all toml files
+        internal: true
+        deps:
+        - task: ensure
+        cmds:
+        - task: fd:exec
+          vars:
+            COMMAND: '{{.TAPLO_FORMAT_CHECK_COMMAND}}'
+            EXTENSIONS:
+            - toml
+    format:check:files:
+        desc: check formatting of given toml files
+        dir: '{{.USER_WORKING_DIR}}'
+        internal: true
+        requires:
+            vars: [FILES]
+        deps:
+        - task: ensure
+        cmds:
+        - '{{.TAPLO_FORMAT_CHECK_COMMAND}} {{.FILES}}'
+    lint:
+        desc: lint all toml files
+        internal: true
+        deps:
+        - task: ensure
+        cmds:
+        - task: fd:exec
+          vars:
+            COMMAND: '{{.TAPLO_FORMAT_COMMAND}}'
+            EXTENSIONS:
+            - toml
+    lint:files:
+        desc: lint given toml files
+        dir: '{{.USER_WORKING_DIR}}'
+        internal: true
+        requires:
+            vars: [FILES]
+        deps:
+        - task: ensure
+        cmds:
+        - '{{.TAPLO_LINT_COMMAND}} {{.FILES}}'
