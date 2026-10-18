@@ -1,7 +1,6 @@
 # Check Lua Formatting
 name: Check Lua Formatting
 on: pull_request
-
 jobs:
   stylua-check:
     name: Stylua Check
@@ -17,4 +16,3 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           version: latest
           args: --check .
-

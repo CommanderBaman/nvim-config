@@ -14,7 +14,9 @@ assignees: ''
 - I have read the appropriate plugin's documentation.
 - I have searched that this issue has not been reported before.
 
-- [ ] **By checking this, I confirm that the above steps are completed. I understand leaving this unchecked will result in this report being closed immediately.**
+- [ ] **By checking this, I confirm that the above steps are completed.
+  I understand leaving this unchecked will result in this report being closed
+  immediately.**
 
 ## Describe the bug
 <!-- A clear and concise description of what the bug is. -->
