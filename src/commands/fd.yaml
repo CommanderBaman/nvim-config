@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+includes:
+    variables:
+        taskfile: ../common/variables.yaml
+        internal: true
+        vars:
+            GRIMOIRE_DIR: '{{.GRIMOIRE_DIR}}'
+vars:
+    FD_FILES: 'fd --type file --hidden --color never --exclude .git --exclude .jj --exclude {{.GRIMOIRE_DIR}}'
+tasks:
+    ensure:
+        desc: check if fd is present
+        internal: true
+        preconditions:
+        - sh: fd -V
+          msg: fd must be installed to find files
+    exec:
+        desc: run given command on files with extension in working directory
+        dir: '{{.USER_WORKING_DIR}}'
+        internal: true
+        deps:
+        - task: ensure
+        requires:
+            vars: [COMMAND, EXTENSIONS]
+        cmds:
+        - '{{.FD_FILES}} {{range .EXTENSIONS}}--extension {{.}} {{end}} --exec-batch {{.COMMAND}}'

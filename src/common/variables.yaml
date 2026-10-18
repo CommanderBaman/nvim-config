@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+vars:
+    GRIMOIRE_DIR: '{{.GRIMOIRE_DIR | default ".grimoire"}}'
+    # dependents
+    CONFIG_DIR: '{{.GRIMOIRE_DIR}}/config'
+    GITHOOK_DIR: '{{.GRIMOIRE_DIR}}/githooks'
+tasks:
+    print:
+        desc: print all variables
+        silent: true
+        cmds:
+        - echo 'GRIMOIRE_DIR={{.GRIMOIRE_DIR}}'
+        - echo 'CONFIG_DIR={{.CONFIG_DIR}}'
+        - echo 'GITHOOK_DIR={{.GITHOOK_DIR}}'

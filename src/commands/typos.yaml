@@ -1,0 +1,35 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+includes:
+    variables:
+        taskfile: ../common/variables.yaml
+        internal: true
+        vars:
+            GRIMOIRE_DIR: '{{.GRIMOIRE_DIR}}'
+tasks:
+    ensure:
+        desc: check if typos cli is present
+        internal: true
+        preconditions:
+        - sh: typos --version
+          msg: typos cli must be installed
+    init:config:
+        desc: setup config for typos by copying the default if not present
+        dir: '{{.USER_WORKING_DIR}}'
+        internal: true
+        preconditions:
+        - sh: "[ -f {{.CONFIG_DIR}}/_typos.toml -o -f _typos.toml -o -f .typos.toml ]"
+          msg: default typos config must be present
+        # successful if typos config present at root
+        status:
+        - "[ -f _typos.toml -o -f .typos.toml ]"
+        cmds:
+        - cp {{.CONFIG_DIR}}/_typos.toml _typos.toml
+    run:
+        desc: Verify files follow project style conventions defined in editor config
+        dir: '{{.USER_WORKING_DIR}}'
+        internal: true
+        deps:
+        - task: ensure
+        cmds:
+        - typos

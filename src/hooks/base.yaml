@@ -1,0 +1,64 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+includes:
+    editorconfig-checker:
+        taskfile: ../commands/editorconfig-checker.yaml
+        internal: true
+        vars:
+            GRIMOIRE_DIR: '{{.GRIMOIRE_DIR}}'
+    git:
+        taskfile: ../commands/git.yaml
+        internal: true
+        vars:
+            GRIMOIRE_DIR: '{{.GRIMOIRE_DIR}}'
+    typos:
+        taskfile: ../commands/typos.yaml
+        internal: true
+        vars:
+            GRIMOIRE_DIR: '{{.GRIMOIRE_DIR}}'
+tasks:
+    init:
+        desc: initialize the project
+        summary: initialize things common to all projects
+        cmds:
+        - echo "setting up editor config"
+        - task: editorconfig-checker:init:config
+        - echo "setting up typo check"
+        - task: typos:init:config
+        - echo "setting up gitattributes"
+        - task: git:init:attributes
+        - echo "setting up githooks"
+        - task: git:init:hooks
+    check:precommit:
+        aliases:
+        - precommit
+        desc: run all checks done before commit
+        cmds:
+        - echo "running precommit checks"
+        - task: editorconfig-checker:run
+        - task: typos:run
+        - task: format:check
+        - task: lint
+        - echo "precommit checks passed"
+    check:prepush:
+        aliases:
+        - prepush
+        desc: run all checks done before push
+        cmds:
+        - echo "running prepush checks"
+        - task: test
+        - echo "prepush checks passed"
+    check:
+        desc: run all checks defined in the repo
+        cmds:
+        - task: check:precommit
+        - task: check:prepush
+    fix:precommit:
+        internal: true
+        desc: try the best to fix things to pass precommit checks
+        cmds:
+        - task: format
+    fix:
+        desc: try fixing problems found by checks
+        cmds:
+        - task: fix:precommit
