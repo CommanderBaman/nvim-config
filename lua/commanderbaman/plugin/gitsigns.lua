@@ -41,6 +41,7 @@ return {
                 function()
                     gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
                 end,
+                -- typochecker:disable-next-line
                 { desc = 'git [s]tage hunk' }
             )
             map(
@@ -56,6 +57,7 @@ return {
                 'n',
                 '<leader>hs',
                 gitsigns.stage_hunk,
+                -- typochecker:disable-next-line
                 { desc = 'git [s]tage hunk' }
             )
             map(
@@ -68,6 +70,7 @@ return {
                 'n',
                 '<leader>hS',
                 gitsigns.stage_buffer,
+                -- typochecker:disable-next-line
                 { desc = 'git [S]tage buffer' }
             )
             map(

@@ -42,54 +42,63 @@ return {
             'n',
             '<leader>sh',
             builtin.help_tags,
+            -- typochecker:disable-next-line
             { desc = '[S]earch [H]elp' }
         )
         vim.keymap.set(
             'n',
             '<leader>sk',
             builtin.keymaps,
+            -- typochecker:disable-next-line
             { desc = '[S]earch [K]eymaps' }
         )
         vim.keymap.set(
             'n',
             '<leader>sf',
             builtin.find_files,
+            -- typochecker:disable-next-line
             { desc = '[S]earch [F]iles' }
         )
         vim.keymap.set(
             'n',
             '<leader>ss',
             builtin.builtin,
+            -- typochecker:disable-next-line
             { desc = '[S]earch [S]elect Telescope' }
         )
         vim.keymap.set(
             'n',
             '<leader>sw',
             builtin.grep_string,
+            -- typochecker:disable-next-line
             { desc = '[S]earch current [W]ord' }
         )
         vim.keymap.set(
             'n',
             '<leader>sg',
             builtin.live_grep,
+            -- typochecker:disable-next-line
             { desc = '[S]earch by [G]rep' }
         )
         vim.keymap.set(
             'n',
             '<leader>sd',
             builtin.diagnostics,
+            -- typochecker:disable-next-line
             { desc = '[S]earch [D]iagnostics' }
         )
         vim.keymap.set(
             'n',
             '<leader>sr',
             builtin.resume,
+            -- typochecker:disable-next-line
             { desc = '[S]earch [R]esume' }
         )
         vim.keymap.set(
             'n',
             '<leader>s.',
             builtin.oldfiles,
+            -- typochecker:disable-next-line
             { desc = '[S]earch Recent Files ("." for repeat)' }
         )
         vim.keymap.set('n', '<leader>sl', function()
@@ -104,6 +113,7 @@ return {
                 '!**/.{git,jj}/*',
             }
             builtin.find_files(opts)
+            -- typochecker:disable-next-line
         end, { desc = '[S]earch a[L]l files except VCS' })
         vim.keymap.set(
             'n',
@@ -122,6 +132,7 @@ return {
                     }
                 )
             end,
+            -- typochecker:disable-next-line
             { desc = '[/] Fuzzily search in current buffer' }
         )
         vim.keymap.set(
@@ -133,12 +144,14 @@ return {
                     prompt_title = 'Live Grep in Open Files',
                 }
             end,
+            -- typochecker:disable-next-line
             { desc = '[S]earch [/] in Open Files' }
         )
         vim.keymap.set(
             'n',
             '<leader>sn',
             function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end,
+            -- typochecker:disable-next-line
             { desc = '[S]earch [N]eovim files' }
         )
     end,

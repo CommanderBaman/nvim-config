@@ -37,35 +37,35 @@ tasks:
   format:check:
     desc: check if all files in project are formatted properly
     cmds:
-      - task: yaml:format:check
+      - task: lua:format:check
       - task: mdslw:format:check
       - task: mdsf:format:check
-      - task: taplo:format:check
+      - task: yaml:format:check
   format:files:
     desc: format specific files in repository. usage = task format:files FILES="a b"
     requires:
       vars: [FILES]
     cmds:
+      - task: lua:format:files
       - task: yaml:format:files
       - task: mdslw:format:files
       - task: mdsf:format:files
-      - task: taplo:format:files
   lint:
     desc: check for lint errors in the project
     cmds:
+      - task: lua:lint
       - task: yaml:lint
       - task: mdslw:lint
       - task: mdsf:lint
-      - task: taplo:lint
   lint:files:
     desc: check for lint errors in specific files. usage = task lint:files = FILES="a b"
     requires:
       vars: [FILES]
     cmds:
+      - task: lua:lint:files
       - task: yaml:lint:files
       - task: mdslw:lint:files
       - task: mdsf:lint:files
-      - task: taplo:lint:files
   test:
     desc: test if repository is working as intended
     cmds:

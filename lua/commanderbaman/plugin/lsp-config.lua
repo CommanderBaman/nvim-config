@@ -43,6 +43,7 @@ return {
 
                 -- Rename the variable under your cursor.
                 --  Most Language Servers support renaming across files, etc.
+                -- typochecker:disable-next-line
                 map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
 
                 -- Execute a code action, usually your cursor needs to be on top of an error
@@ -50,6 +51,7 @@ return {
                 map(
                     'gra',
                     vim.lsp.buf.code_action,
+                    -- typochecker:disable-next-line
                     '[G]oto Code [A]ction',
                     { 'n', 'x' }
                 )
@@ -58,6 +60,7 @@ return {
                 map(
                     'grr',
                     require('telescope.builtin').lsp_references,
+                    -- typochecker:disable-next-line
                     '[G]oto [R]eferences'
                 )
 
@@ -66,6 +69,7 @@ return {
                 map(
                     'gri',
                     require('telescope.builtin').lsp_implementations,
+                    -- typochecker:disable-next-line
                     '[G]oto [I]mplementation'
                 )
 
@@ -75,6 +79,7 @@ return {
                 map(
                     'grd',
                     require('telescope.builtin').lsp_definitions,
+                    -- typochecker:disable-next-line
                     '[G]oto [D]efinition'
                 )
 
@@ -104,6 +109,7 @@ return {
                 map(
                     'grt',
                     require('telescope.builtin').lsp_type_definitions,
+                    -- typochecker:disable-next-line
                     '[G]oto [T]ype Definition'
                 )
 

@@ -17,7 +17,9 @@ return {
 
         -- Add/delete/replace surroundings (brackets, quotes, etc.)
         -- Examples:
+        -- typochecker:disable-next-line
         --  - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
+        -- typochecker:disable-next-line
         --  - sd'   - [S]urround [D]elete [']quotes
         --  - sr)'  - [S]urround [R]eplace [)] [']
         require('mini.surround').setup()
