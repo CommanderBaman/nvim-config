@@ -1,0 +1,86 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+includes:
+    fd:
+        taskfile: ./fd.yaml
+        internal: true
+        vars:
+            GRIMOIRE_DIR: '{{.GRIMOIRE_DIR}}'
+vars:
+    STYLUA_COMMAND: 'stylua'
+    STYLUA_FORMAT_COMMAND: '{{.STYLUA_COMMAND}}'
+    STYLUA_FORMAT_CHECK_COMMAND: '{{.STYLUA_COMMAND}} --check'
+tasks:
+    ensure:
+        desc: check if stylua is present and setup
+        internal: true
+        preconditions:
+        - sh: stylua --version
+          msg: stylua must be installed to run stylua commands
+    init:format:
+        desc: initialize the config for format
+        dir: '{{.USER_WORKING_DIR}}'
+        internal: true
+        preconditions:
+        # either default present or already present in repo
+        - sh: "[ -f {{.CONFIG_DIR}}/.stylua.toml -o -f .stylua.toml ]"
+          msg: default config must be present
+        # successful if config is present
+        status:
+        - "[ -f .stylua.toml ]"
+        cmds:
+        - cp {{.CONFIG_DIR}}/.stylua.toml .stylua.toml
+    format:
+        desc: format all lua files present in folder
+        internal: true
+        deps:
+        - task: ensure
+        cmds:
+        - task: fd:exec
+          vars:
+            COMMAND: '{{.STYLUA_FORMAT_COMMAND}}'
+            EXTENSIONS:
+            - lua
+    format:files:
+        desc: format all lua files
+        dir: '{{.USER_WORKING_DIR}}'
+        internal: true
+        requires:
+            vars: [FILES]
+        deps:
+        - task: ensure
+        cmds:
+        - '{{.STYLUA_FORMAT_COMMAND}} {{.FILES}}'
+    format:check:
+        desc: check formatting of all lua files
+        internal: true
+        deps:
+        - task: ensure
+        cmds:
+        - task: fd:exec
+          vars:
+            COMMAND: '{{.STYLUA_FORMAT_CHECK_COMMAND}}'
+            EXTENSIONS:
+            - lua
+    format:check:files:
+        desc: check formatting of given lua files
+        dir: '{{.USER_WORKING_DIR}}'
+        internal: true
+        requires:
+            vars: [FILES]
+        deps:
+        - task: ensure
+        cmds:
+        - '{{.STYLUA_FORMAT_CHECK_COMMAND}} {{.FILES}}'
+    lint:
+        desc: lint all lua files
+        internal: true
+        cmds:
+        - task: format:check
+    lint:files:
+        desc: lint given lua files
+        internal: true
+        requires:
+            vars: [FILES]
+        cmds:
+        - task: format:check:files

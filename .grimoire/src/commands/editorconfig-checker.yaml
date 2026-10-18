@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+includes:
+    variables:
+        taskfile: ../common/variables.yaml
+        internal: true
+        vars:
+            GRIMOIRE_DIR: '{{.GRIMOIRE_DIR}}'
+tasks:
+    ensure:
+        desc: check if editorconfig checker cli is present
+        internal: true
+        preconditions:
+        - sh: editorconfig-checker --version
+          msg: editorconfig-checker must be installed
+    init:config:
+        desc: setup config for editorconfig checker by copying the default if not present
+        dir: '{{.USER_WORKING_DIR}}'
+        internal: true
+        preconditions:
+        # either default present or already present in repo
+        - sh: "[ -f {{.CONFIG_DIR}}/.editorconfig -o -f .editorconfig ]"
+          msg: default attributes config must be present
+        # successful if git attributes present at root
+        status:
+        - "[ -f .editorconfig ]"
+        cmds:
+        - cp {{.CONFIG_DIR}}/.editorconfig .editorconfig
+    run:
+        desc: Verify files follow project style conventions defined in editor config
+        dir: '{{.USER_WORKING_DIR}}'
+        internal: true
+        deps:
+        - task: ensure
+        cmds:
+        - editorconfig-checker

@@ -1,0 +1,9 @@
+gitignore_excludes: true
+line_ending: lf
+formatter:
+    type: basic
+    eof_newline: true
+    indent: 4
+    indentless_arrays: true
+    line_ending: lf
+    trim_trailing_whitespace: true

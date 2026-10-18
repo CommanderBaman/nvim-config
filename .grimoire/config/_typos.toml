@@ -1,0 +1,12 @@
+[default]
+extend-ignore-re = [
+    # valid for // and #
+    # ignore the line after `# typochecker:disable-next-line`:
+    "(#|//)\\s*typochecker:disable-next-line\\n.*",
+    # ignore blocks between `# typochecker:off` and `# typochecker:on`
+    "(?s)(#|//)\\s*typochecker:off.*?\\n\\s*(#|//)\\s*typochecker:on",
+]
+
+# example on how to remove spelling checks
+[default.extend-words]
+IST = "IST"
